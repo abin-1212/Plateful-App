@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833668736619",
+    "project_id": "plateful-2285c",
+    "storage_bucket": "plateful-2285c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833668736619:android:d7f730ee3e68e0d8aef32e",
+        "android_client_info": {
+          "package_name": "com.example.plateful"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByPC-UZQAFgodM_R9ckxrAkYWgLHqiBio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
