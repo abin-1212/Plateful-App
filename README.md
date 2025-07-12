@@ -1,16 +1,21 @@
-# plateful
+# Plateful – Smart Food Redistribution App
 
-A new Flutter project.
+Plateful is a mission-driven mobile application designed to reduce food wastage in restaurants and hotels by enabling surplus food to be made available to the public at highly affordable prices. It bridges the gap between excess supply and food demand in a sustainable and efficient way.
 
-## Getting Started
+## 🌟 Key Features
+- 🛍️ Discover discounted surplus food packs near you
+- 🏪 Vendors can list and manage leftover food items
+- ⏰ Real-time pack availability updates
+- 📍 Geolocation support to find the nearest packs
+- 🔔 Notification system for newly added or updated packs
+- 🧠 AI-based demand prediction for optimal redistribution (coming soon)
 
-This project is a starting point for a Flutter application.
+## 🎯 Goal
+To minimize food wastage and promote access to good food for all, especially for underserved communities.
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Getting Started
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/abin-1212/Plateful-App.git
+   cd Plateful-App
