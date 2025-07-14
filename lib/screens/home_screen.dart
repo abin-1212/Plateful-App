@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/navbar.dart';
+import '../firebase_options.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -212,6 +213,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            DemandPredictionWidget(),
           ],
         ),
       ),
@@ -296,6 +298,58 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DemandPredictionWidget extends StatefulWidget {
+  @override
+  _DemandPredictionWidgetState createState() => _DemandPredictionWidgetState();
+}
+
+class _DemandPredictionWidgetState extends State<DemandPredictionWidget> {
+  int? prediction;
+  bool loading = false;
+  String? error;
+
+  void predictDemand() async {
+    setState(() {
+      loading = true;
+      error = null;
+    });
+    final input = {
+      "center_id": 11,
+      "meal_id": 1885,
+      "week": 5,
+      "checkout_price": 136.83
+    };
+    try {
+      int result = await getPredictedDemand(input);
+      setState(() {
+        prediction = result;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: predictDemand,
+          child: Text('Predict Demand'),
+        ),
+        if (loading) CircularProgressIndicator(),
+        if (prediction != null) Text('Predicted Demand: '
+            ' 24$prediction'),
+        if (error != null) Text('Error: $error', style: TextStyle(color: Colors.red)),
+      ],
     );
   }
 }

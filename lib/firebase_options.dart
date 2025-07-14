@@ -3,6 +3,8 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -85,4 +87,17 @@ class DefaultFirebaseOptions {
     storageBucket: 'plateful-2285c.firebasestorage.app',
     measurementId: 'G-DKFQK9Z34P',
   );
+}
+
+Future<int> getPredictedDemand(Map<String, dynamic> input) async {
+  final response = await http.post(
+    Uri.parse('http://localhost:5000/predict'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode(input),
+  );
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body)['predicted_demand'];
+  } else {
+    throw Exception('Failed to get prediction');
+  }
 }
