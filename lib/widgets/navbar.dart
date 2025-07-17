@@ -1,156 +1,188 @@
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animations/animations.dart';
+import '../theme.dart';
+import 'primary_button.dart';
 
-class Navbar extends StatelessWidget {
-  const Navbar({super.key});
+class Navbar extends StatelessWidget implements PreferredSizeWidget {
+  Navbar({Key? key}) : super(key: key);
+
+  final List<_NavItem> navItems = const [
+    _NavItem('Home', '/'),
+    _NavItem('Packs', '/packs'),
+    _NavItem('About', '/about'),
+    _NavItem('Blog', '/blog'),
+    _NavItem('Reviews', '/reviews'),
+    _NavItem('FAQ', '/faq'),
+    _NavItem('Contact', '/contact'),
+    _NavItem('Careers', '/careers'),
+    _NavItem('Download', '/download'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: GlassContainer.clearGlass(
-        width: 1200, // Added width for Navbar glass container
-        height: 80, // Added height for Navbar glass container
-        borderRadius: BorderRadius.circular(32),
-        blur: 16,
-        borderWidth: 2,
-        borderColor: Colors.white.withOpacity(0.18),
-        elevation: 8,
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withOpacity(0.18),
-            Colors.deepPurple.withOpacity(0.12),
+    final isMobile = MediaQuery.of(context).size.width < 900;
+    return Material(
+      elevation: 0,
+      color: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48, vertical: 8),
+        constraints: BoxConstraints(maxWidth: 1440),
+        child: Row(
+          children: [
+            // Logo
+            GestureDetector(
+              onTap: () => context.go('/'),
+              child: Row(
+                children: [
+                  // Replace with your logo asset if available
+                  Icon(Icons.restaurant_menu, color: PlatefulColors.primaryGradientStart, size: 32),
+                  SizedBox(width: 10),
+                  Text(
+                    'Plateful',
+                    style: GoogleFonts.poppins(
+                      color: PlatefulColors.primaryGradientStart,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 24,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            if (!isMobile)
+              Row(
+                children: [
+                  ...navItems.map((item) => _NavLink(item: item)),
+                  SizedBox(width: 16),
+                  PrimaryButton(
+                    label: 'Get Started',
+                    onPressed: () => context.go('/signup'),
+                    height: 40,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                ],
+              )
+            else
+              _MobileMenu(navItems: navItems),
           ],
         ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-          child: Row(
-            children: [
-              // Futuristic Logo with Neon Glow
-              ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return LinearGradient(
-                    colors: [
-                      Colors.deepPurpleAccent,
-                      Colors.tealAccent,
-                      Colors.greenAccent,
-                    ],
-                  ).createShader(bounds);
-                },
-                child: Text(
-                  'plateful',
-                  style: GoogleFonts.orbitron(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 16,
-                        color: Colors.tealAccent.withOpacity(0.7),
-                        offset: Offset(0, 0),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Spacer(),
-              ...[
-                _NavButton('Home', '/'),
-                _NavButton('About', '/about'),
-                _NavButton('Blog', '/blog'),
-                _NavButton('Reviews', '/reviews'),
-                _NavButton('Contact', '/contact'),
-                _NavButton('FAQ', '/faq'),
-                _NavButton('Careers', '/careers'),
-                _NavButton('Download', '/download'),
-                _NavButton('Login', '/login'),
-                _NavButton('Sign Up', '/signup'),
-              ].map((btn) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: btn,
-                  )),
-            ],
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(64);
+}
+
+class _NavItem {
+  final String label;
+  final String route;
+  const _NavItem(this.label, this.route);
+}
+
+class _NavLink extends StatelessWidget {
+  final _NavItem item;
+  const _NavLink({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    // Remove isActive logic or use a fallback if not available
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => context.go(item.route),
+        child: AnimatedDefaultTextStyle(
+          duration: Duration(milliseconds: 120),
+          style: GoogleFonts.poppins(
+            color: PlatefulColors.textPrimary,
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
           ),
+          child: Text(item.label),
         ),
       ),
     );
   }
 }
 
-class _NavButton extends StatefulWidget {
-  final String label;
-  final String route;
-  const _NavButton(this.label, this.route);
+class _MobileMenu extends StatefulWidget {
+  final List<_NavItem> navItems;
+  const _MobileMenu({required this.navItems});
 
   @override
-  State<_NavButton> createState() => _NavButtonState();
+  State<_MobileMenu> createState() => _MobileMenuState();
 }
 
-class _NavButtonState extends State<_NavButton> {
-  bool _hovering = false;
+class _MobileMenuState extends State<_MobileMenu> {
+  bool open = false;
+
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOut,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: _hovering
-              ? [
-                  BoxShadow(
-                    color: Colors.tealAccent.withOpacity(0.4),
-                    blurRadius: 16,
-                    spreadRadius: 1,
-                  ),
-                ]
-              : [],
-          gradient: _hovering
-              ? LinearGradient(
-                  colors: [
-                    Colors.deepPurpleAccent.withOpacity(0.7),
-                    Colors.tealAccent.withOpacity(0.7),
+    return Stack(
+      children: [
+        IconButton(
+          icon: Icon(open ? Icons.close : Icons.menu, color: PlatefulColors.primaryGradientStart, size: 32),
+          onPressed: () => setState(() => open = !open),
+        ),
+        if (open)
+          Positioned(
+            right: 0,
+            top: 48,
+            child: Material(
+              elevation: 8,
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                width: 220,
+                padding: EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: PlatefulColors.primaryGradientStart.withOpacity(0.08),
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
+                    ),
                   ],
-                )
-              : null,
-        ),
-        child: TextButton(
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-            foregroundColor: Colors.white,
-            textStyle: GoogleFonts.orbitron(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
-            ),
-          ),
-          onPressed: () => Navigator.pushNamed(context, widget.route),
-          child: AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 220),
-            style: GoogleFonts.orbitron(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: _hovering ? Colors.tealAccent : Colors.white,
-              letterSpacing: 1.2,
-              shadows: _hovering
-                  ? [
-                      Shadow(
-                        blurRadius: 12,
-                        color: Colors.tealAccent.withOpacity(0.7),
-                        offset: Offset(0, 0),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ...widget.navItems.map((item) => ListTile(
+                          title: Text(
+                            item.label,
+                            style: GoogleFonts.poppins(
+                              color: PlatefulColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() => open = false);
+                            context.go(item.route);
+                          },
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: PrimaryButton(
+                        label: 'Get Started',
+                        onPressed: () {
+                          setState(() => open = false);
+                          context.go('/signup');
+                        },
+                        height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                       ),
-                    ]
-                  : [],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Text(widget.label),
           ),
-        ),
-      ),
+      ],
     );
   }
 } 

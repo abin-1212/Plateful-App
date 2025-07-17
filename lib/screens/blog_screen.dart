@@ -1,120 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class BlogScreen extends StatelessWidget {
   const BlogScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FB),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Navbar(),
-            // Hero Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-              child: GlassContainer.clearGlass(
-                width: 900, // Added width for hero section glass container
-                height: 220, // Added height for hero section glass container
-                borderRadius: BorderRadius.circular(32),
-                blur: 16,
-                borderWidth: 2,
-                borderColor: Colors.white.withOpacity(0.18),
-                elevation: 8,
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.18),
-                    Colors.deepPurple.withOpacity(0.12),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AnimatedTextKit(
-                        animatedTexts: [
-                          TyperAnimatedText(
-                            'Plateful Blog',
-                            textStyle: GoogleFonts.orbitron(
-                              fontSize: 38,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 2,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 16,
-                                  color: Colors.tealAccent.withOpacity(0.7),
-                                  offset: Offset(0, 0),
-                                ),
-                              ],
-                            ),
-                            speed: Duration(milliseconds: 40),
-                          ),
-                        ],
-                        isRepeatingAnimation: false,
-                      ),
-                      SizedBox(height: 16),
-                      AnimatedTextKit(
-                        animatedTexts: [
-                          FadeAnimatedText(
-                            'Tips, stories, and updates from the world of surplus food.',
-                            textStyle: GoogleFonts.orbitron(
-                              fontSize: 24,
-                              color: Colors.tealAccent,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            duration: Duration(milliseconds: 1800),
-                          ),
-                        ],
-                        isRepeatingAnimation: false,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // Blog Posts Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Latest Posts',
-                    style: GoogleFonts.orbitron(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                  ),
-                  SizedBox(height: 32),
-                  _Blog3DCard(
-                    title: 'How Plateful Empowers Consumers to Make a Difference',
-                    date: '10 Apr 2025',
-                    imageUrl: 'https://www.plenti.co.in/_next/image?url=%2Fassets%2Fimages%2Fblog1.png&w=640&q=75',
-                    excerpt: 'Discover how Plateful is redefining food consumption in India: affordable, sustainable & smart.',
-                  ),
-                  SizedBox(height: 32),
-                  _Blog3DCard(
-                    title: 'Sustainable Living with Plateful: A Step Towards a Greener India',
-                    date: '6 Sept 2024',
-                    imageUrl: 'https://www.plenti.co.in/_next/image?url=%2Fassets%2Fimages%2Fblog2.png&w=640&q=75',
-                    excerpt: 'Learn how you can make a positive impact on the environment and your wallet with Plateful.',
-                  ),
-                  SizedBox(height: 32),
-                  _Blog3DCard(
-                    title: 'Tackling Food Waste in India: How Plateful Empowers Consumers',
-                    date: '6 Sept 2024',
-                    imageUrl: 'https://www.plenti.co.in/_next/image?url=%2Fassets%2Fimages%2Fblog3.png&w=640&q=75',
-                    excerpt: 'Explore practical tips and real stories on reducing food waste and supporting local communities.',
-                  ),
-                ],
-              ),
-            ),
-            const Footer(),
+            Navbar(),
+            _BlogHeader(isMobile: isMobile),
+            _BlogList(isMobile: isMobile),
+            Footer(),
           ],
         ),
       ),
@@ -122,81 +25,217 @@ class BlogScreen extends StatelessWidget {
   }
 }
 
-class _Blog3DCard extends StatefulWidget {
-  final String title;
-  final String date;
-  final String imageUrl;
-  final String excerpt;
-  const _Blog3DCard({required this.title, required this.date, required this.imageUrl, required this.excerpt});
+class _BlogHeader extends StatelessWidget {
+  final bool isMobile;
+  const _BlogHeader({required this.isMobile});
 
-  @override
-  State<_Blog3DCard> createState() => _Blog3DCardState();
-}
-
-class _Blog3DCardState extends State<_Blog3DCard> {
-  bool _hovering = false;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOut,
-        transform: _hovering ? (Matrix4.identity()..translate(0.0, -8.0, 0.0)..scale(1.03)) : Matrix4.identity(),
-        child: Neumorphic(
-          style: NeumorphicStyle(
-            depth: _hovering ? 16 : 8,
-            intensity: 0.7,
-            surfaceIntensity: 0.25,
-            color: Colors.white.withOpacity(0.95),
-            shadowLightColor: Colors.tealAccent,
-            shadowDarkColor: Colors.deepPurple,
-            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(24)),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 48 : 72,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Plateful Blog',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w800,
+              fontSize: isMobile ? 32 : 44,
+              letterSpacing: 1.2,
+            ),
+            textAlign: TextAlign.center,
           ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
-                child: Image.network(
-                  widget.imageUrl,
-                  width: 180,
-                  height: 140,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.title,
-                        style: GoogleFonts.orbitron(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        widget.date,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        widget.excerpt,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-                      ),
-                      SizedBox(height: 12),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text('Read More', style: TextStyle(color: Color(0xFF6C3EF4))),
-                      ),
-                    ],
+          const SizedBox(height: 18),
+          Text(
+            'Tips, stories, and updates from the world of food packs.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w500,
+              fontSize: isMobile ? 16 : 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BlogList extends StatelessWidget {
+  final bool isMobile;
+  const _BlogList({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    final posts = [
+      {
+        'image': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+        'title': '5 Reasons to Try Curated Food Packs',
+        'excerpt': 'Discover why food packs are the next big thing in convenient, healthy eating.',
+        'author': 'Aarav Mehta',
+        'date': 'May 2024',
+      },
+      {
+        'image': 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
+        'title': 'How Plateful Ensures Freshness',
+        'excerpt': 'A behind-the-scenes look at our quality and delivery process.',
+        'author': 'Saanvi Sharma',
+        'date': 'April 2024',
+      },
+      {
+        'image': 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+        'title': 'Meet Our Partner Brands',
+        'excerpt': 'Get to know the amazing brands that make Plateful possible.',
+        'author': 'Kabir Patel',
+        'date': 'March 2024',
+      },
+    ];
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 8 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: isMobile
+          ? Column(
+              children: posts
+                  .map((post) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: _BlogCard(post: post, isMobile: true),
+                      ))
+                  .toList(),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: posts
+                  .map((post) => Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          child: _BlogCard(post: post, isMobile: false),
+                        ),
+                      ))
+                  .toList(),
+            ),
+    );
+  }
+}
+
+class _BlogCard extends StatelessWidget {
+  final Map<String, String> post;
+  final bool isMobile;
+  const _BlogCard({required this.post, required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 16,
+            spreadRadius: 2,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            child: Image.network(
+              post['image']!,
+              height: isMobile ? 180 : 220,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post['title']!,
+                  style: GoogleFonts.poppins(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.w700,
+                    fontSize: isMobile ? 18 : 22,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  post['excerpt']!,
+                  style: GoogleFonts.poppins(
+                    color: Colors.deepPurple.withOpacity(0.8),
+                    fontWeight: FontWeight.w400,
+                    fontSize: isMobile ? 14 : 16,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor: Colors.tealAccent.withOpacity(0.18),
+                      child: Icon(Icons.person, color: Colors.deepPurple, size: 18),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      post['author']!,
+                      style: GoogleFonts.poppins(
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Icon(Icons.calendar_today, color: Colors.deepPurple.withOpacity(0.6), size: 16),
+                    const SizedBox(width: 6),
+                    Text(
+                      post['date']!,
+                      style: GoogleFonts.poppins(
+                        color: Colors.deepPurple.withOpacity(0.7),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.tealAccent,
+                      foregroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      textStyle: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text('Read More'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

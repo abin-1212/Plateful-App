@@ -1,273 +1,466 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:lottie/lottie.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FB),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Navbar(),
-            // Hero Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-              child: GlassContainer.clearGlass(
-                width: 900, // Added width for hero section glass container
-                height: 220, // Added height for hero section glass container
-                borderRadius: BorderRadius.circular(32),
-                blur: 16,
-                borderWidth: 2,
-                borderColor: Colors.white.withOpacity(0.18),
-                elevation: 8,
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.18),
-                    Colors.deepPurple.withOpacity(0.12),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AnimatedTextKit(
-                            animatedTexts: [
-                              TyperAnimatedText(
-                                'About Plateful',
-                                textStyle: GoogleFonts.orbitron(
-                                  fontSize: 38,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  letterSpacing: 2,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 16,
-                                      color: Colors.tealAccent.withOpacity(0.7),
-                                      offset: Offset(0, 0),
-                                    ),
-                                  ],
-                                ),
-                                speed: Duration(milliseconds: 40),
-                              ),
-                            ],
-                            isRepeatingAnimation: false,
-                          ),
-                          SizedBox(height: 16),
-                          AnimatedTextKit(
-                            animatedTexts: [
-                              FadeAnimatedText(
-                                "India's First Food Surplus Marketplace",
-                                textStyle: GoogleFonts.orbitron(
-                                  fontSize: 24,
-                                  color: Colors.tealAccent,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                duration: Duration(milliseconds: 1800),
-                              ),
-                            ],
-                            isRepeatingAnimation: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 40),
-                        child: GlassContainer.clearGlass(
-                          width: 220, // Added width for Lottie glass container
-                          height: 180, // Added height for Lottie glass container
-                          borderRadius: BorderRadius.circular(24),
-                          blur: 12,
-                          borderWidth: 2,
-                          borderColor: Colors.white.withOpacity(0.18),
-                          elevation: 6,
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.white.withOpacity(0.10),
-                              Colors.deepPurple.withOpacity(0.10),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Lottie.network(
-                              'https://assets10.lottiefiles.com/packages/lf20_2ks3pjua.json',
-                              height: 140,
-                              repeat: true,
-                              animate: true,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Mission Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Neumorphic(
-                      style: NeumorphicStyle(
-                        depth: 12,
-                        intensity: 0.7,
-                        surfaceIntensity: 0.25,
-                        color: Colors.white.withOpacity(0.95),
-                        shadowLightColor: Colors.tealAccent,
-                        shadowDarkColor: Colors.deepPurple,
-                        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(24)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Our Mission',
-                              style: GoogleFonts.orbitron(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              'At Plateful, we connect restaurants, bakeries, supermarkets, and customers on one unified platform. Our mission is to make food accessible and affordable for everyone, while reducing food waste and supporting local businesses.',
-                              style: TextStyle(fontSize: 18, color: Colors.black87),
-                            ),
-                            SizedBox(height: 32),
-                            Text(
-                              'How Plateful Works',
-                              style: GoogleFonts.orbitron(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                            ),
-                            SizedBox(height: 12),
-                            Text(
-                              'Discover unbeatable deals on surplus meals, baked goods, and groceries. Reserve surprise bags, pick up at your convenience, and enjoy great food at a fraction of the cost!\n\n1. Download & Explore: Download the Plateful app and sign up to get started. Discover a variety of packs and listings from nearby restaurants and supermarkets.\n2. Reserve a Surprise Bag: Choose a surprise bag from your favorite local stores and reserve it at a discounted price.\n3. Pick Up & Enjoy: Pick up your bag at the scheduled time and enjoy delicious food at unbeatable prices!',
-                              style: TextStyle(fontSize: 16, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: GlassContainer.clearGlass(
-                        width: 220, // Added width for mission image glass container
-                        height: 180, // Added height for mission image glass container
-                        borderRadius: BorderRadius.circular(24),
-                        blur: 12,
-                        borderWidth: 2,
-                        borderColor: Colors.white.withOpacity(0.18),
-                        elevation: 6,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.white.withOpacity(0.10),
-                            Colors.deepPurple.withOpacity(0.10),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            'https://www.plenti.co.in/_next/image?url=%2Fassets%2Fimages%2Fmission.png&w=640&q=75',
-                            fit: BoxFit.cover,
-                            height: 180,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Why Use Plateful Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Neumorphic(
-                      style: NeumorphicStyle(
-                        depth: 12,
-                        intensity: 0.7,
-                        surfaceIntensity: 0.25,
-                        color: Colors.white.withOpacity(0.95),
-                        shadowLightColor: Colors.tealAccent,
-                        shadowDarkColor: Colors.deepPurple,
-                        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(24)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Why Use Plateful?',
-                              style: GoogleFonts.orbitron(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                            ),
-                            SizedBox(height: 12),
-                            Text(
-                              'We’ve designed Plateful to give you the best deals on fresh, surplus food—seamless, affordable, and rewarding for both you and your favorite restaurants.\n\n- Enjoy great food at half the price or less\n- Avoid the hassle of choosing the dish by ordering with a few taps\n- Support local vendors and reduce food waste\n- No hidden charges, flexible pickup time, guaranteed discount, and exclusive value packs',
-                              style: TextStyle(fontSize: 16, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: GlassContainer.clearGlass(
-                        width: 220, // Added width for why use image glass container
-                        height: 180, // Added height for why use image glass container
-                        borderRadius: BorderRadius.circular(24),
-                        blur: 12,
-                        borderWidth: 2,
-                        borderColor: Colors.white.withOpacity(0.18),
-                        elevation: 6,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.white.withOpacity(0.10),
-                            Colors.deepPurple.withOpacity(0.10),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            'https://www.plenti.co.in/_next/image?url=%2Fassets%2Fimages%2Fwhyuse.png&w=640&q=75',
-                            fit: BoxFit.cover,
-                            height: 180,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Footer(),
+            Navbar(),
+            _AboutHeader(isMobile: isMobile),
+            _AboutStory(isMobile: isMobile),
+            _AboutMissionVision(isMobile: isMobile),
+            _AboutValues(isMobile: isMobile),
+            _AboutTeam(isMobile: isMobile),
+            Footer(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _AboutHeader extends StatelessWidget {
+  final bool isMobile;
+  const _AboutHeader({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 48 : 72,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'About Plateful',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w800,
+              fontSize: isMobile ? 32 : 44,
+              letterSpacing: 1.2,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Our story, mission, and the team behind your favorite food packs.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w500,
+              fontSize: isMobile ? 16 : 20,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AboutStory extends StatelessWidget {
+  final bool isMobile;
+  const _AboutStory({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Our Story',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w700,
+              fontSize: isMobile ? 22 : 28,
+            ),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Plateful was founded with a simple idea: to make curated, high-quality food packs accessible and convenient for everyone. Inspired by the best of food tech and a passion for great meals, we set out to build a platform that brings together top brands and food lovers. Today, Plateful is your go-to destination for discovering, ordering, and enjoying delicious food packs, delivered fresh to your doorstep.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w400,
+              fontSize: isMobile ? 15 : 18,
+              height: 1.6,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AboutMissionVision extends StatelessWidget {
+  final bool isMobile;
+  const _AboutMissionVision({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: isMobile
+          ? Column(
+              children: [
+                _MissionCard(isMobile: true),
+                const SizedBox(height: 24),
+                _VisionCard(isMobile: true),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(child: _MissionCard(isMobile: false)),
+                const SizedBox(width: 32),
+                Expanded(child: _VisionCard(isMobile: false)),
+              ],
+            ),
+    );
+  }
+}
+
+class _MissionCard extends StatelessWidget {
+  final bool isMobile;
+  const _MissionCard({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(isMobile ? 18 : 32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 16,
+            spreadRadius: 2,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.flag, color: Colors.tealAccent, size: 38),
+          const SizedBox(height: 16),
+          Text(
+            'Our Mission',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w600,
+              fontSize: isMobile ? 18 : 22,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'To make high-quality, curated food packs accessible, affordable, and convenient for everyone.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w400,
+              fontSize: isMobile ? 14 : 16,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _VisionCard extends StatelessWidget {
+  final bool isMobile;
+  const _VisionCard({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(isMobile ? 18 : 32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 16,
+            spreadRadius: 2,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.visibility, color: Colors.tealAccent, size: 38),
+          const SizedBox(height: 16),
+          Text(
+            'Our Vision',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w600,
+              fontSize: isMobile ? 18 : 22,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'To be the most trusted platform for discovering and enjoying food packs, connecting people with the best brands and experiences.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w400,
+              fontSize: isMobile ? 14 : 16,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AboutValues extends StatelessWidget {
+  final bool isMobile;
+  const _AboutValues({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    final values = [
+      (Icons.emoji_emotions, 'Customer Delight'),
+      (Icons.verified, 'Quality First'),
+      (Icons.eco, 'Sustainability'),
+      (Icons.group, 'Community'),
+    ];
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Our Values',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w700,
+              fontSize: isMobile ? 22 : 28,
+            ),
+          ),
+          const SizedBox(height: 32),
+          isMobile
+              ? Column(
+                  children: values
+                      .map((v) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: _ValueCard(icon: v.$1, title: v.$2),
+                          ))
+                      .toList(),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: values
+                      .map((v) => Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: _ValueCard(icon: v.$1, title: v.$2),
+                            ),
+                          ))
+                      .toList(),
+                ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ValueCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  const _ValueCard({required this.icon, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 12,
+            spreadRadius: 1,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: Colors.tealAccent, size: 32),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AboutTeam extends StatelessWidget {
+  final bool isMobile;
+  const _AboutTeam({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    final team = [
+      {
+        'name': 'Aarav Mehta',
+        'role': 'Co-Founder & CEO',
+        'img': 'https://randomuser.me/api/portraits/men/11.jpg',
+      },
+      {
+        'name': 'Saanvi Sharma',
+        'role': 'Co-Founder & COO',
+        'img': 'https://randomuser.me/api/portraits/women/21.jpg',
+      },
+      {
+        'name': 'Kabir Patel',
+        'role': 'CTO',
+        'img': 'https://randomuser.me/api/portraits/men/31.jpg',
+      },
+      {
+        'name': 'Meera Iyer',
+        'role': 'Head of Partnerships',
+        'img': 'https://randomuser.me/api/portraits/women/41.jpg',
+      },
+    ];
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Meet the Team',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w700,
+              fontSize: isMobile ? 22 : 28,
+            ),
+          ),
+          const SizedBox(height: 32),
+          isMobile
+              ? Column(
+                  children: team
+                      .map((member) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: _TeamCard(
+                              name: member['name']!,
+                              role: member['role']!,
+                              img: member['img']!,
+                            ),
+                          ))
+                      .toList(),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: team
+                      .map((member) => Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              child: _TeamCard(
+                                name: member['name']!,
+                                role: member['role']!,
+                                img: member['img']!,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TeamCard extends StatelessWidget {
+  final String name;
+  final String role;
+  final String img;
+  const _TeamCard({required this.name, required this.role, required this.img});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 12,
+            spreadRadius: 1,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(img),
+            radius: 36,
+          ),
+          const SizedBox(height: 14),
+          Text(
+            name,
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            role,
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.7),
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+          ),
+        ],
       ),
     );
   }

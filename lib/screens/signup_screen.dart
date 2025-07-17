@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/navbar.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic_plus.dart';
+import '../widgets/footer.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../mock_data.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -12,255 +16,161 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          // Left Side: Animated Hero with Lottie and AnimatedText
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [primary, Color(0xFF181A2A)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: Navbar(),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 48),
+              Text(
+                'Create Your Plateful Account',
+                style: GoogleFonts.poppins(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
+                textAlign: TextAlign.center,
               ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Opacity(
-                    opacity: 0.12,
-                    child: Image.network(
-                      'https://svgshare.com/i/13kA.svg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 80.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'pla',
-                                style: GoogleFonts.orbitron(
-                                  fontSize: 56,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 16,
-                                      color: Colors.tealAccent.withOpacity(0.7),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Text(
-                                    't',
-                                    style: GoogleFonts.orbitron(
-                                      fontSize: 56,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    child: Icon(
-                                      Icons.restaurant,
-                                      color: Colors.white,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'eful',
-                                style: GoogleFonts.orbitron(
-                                  fontSize: 56,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-                          Container(
-                            width: 320,
-                            child: const Divider(
-                              color: Colors.white,
-                              thickness: 3,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          AnimatedTextKit(
-                            animatedTexts: [
-                              TyperAnimatedText(
-                                "India's first\nsurplus Food Marketspace",
-                                textStyle: GoogleFonts.orbitron(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.2,
-                                ),
-                                speed: Duration(milliseconds: 40),
-                              ),
-                            ],
-                            isRepeatingAnimation: false,
-                          ),
-                          const SizedBox(height: 32),
-                          Lottie.network(
-                            'https://assets10.lottiefiles.com/packages/lf20_2ks3pjua.json',
-                            height: 120,
-                            repeat: true,
-                            animate: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 12),
+              Text(
+                'Sign up to start saving on great food',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: Colors.tealAccent,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ),
-          // Right Side: Glassmorphic/Neumorphic Form
-          Expanded(
-            flex: 3,
-            child: Center(
-              child: GlassContainer.clearGlass(
-                width: 500,
-                height: 600, // Added height for SignupScreen glass container
-                borderRadius: BorderRadius.circular(32),
-                blur: 18,
-                borderWidth: 2,
-                borderColor: Colors.white.withOpacity(0.18),
-                elevation: 12,
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.18),
-                    Colors.deepPurple.withOpacity(0.12),
+              const SizedBox(height: 32),
+              Container(
+                width: 400,
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF23244D),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.tealAccent.withOpacity(0.08),
+                      blurRadius: 16,
+                      spreadRadius: 2,
+                    ),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Register Your Business",
-                        style: GoogleFonts.orbitron(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 12,
-                              color: Colors.tealAccent.withOpacity(0.5),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        "Enter your email and password to register",
-                        style: GoogleFonts.orbitron(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          depth: 6,
-                          intensity: 0.7,
-                          color: Colors.white.withOpacity(0.95),
-                          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            labelStyle: GoogleFonts.orbitron(),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                            filled: true,
-                            fillColor: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          depth: 6,
-                          intensity: 0.7,
-                          color: Colors.white.withOpacity(0.95),
-                          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-                        ),
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            labelStyle: GoogleFonts.orbitron(),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                            filled: true,
-                            fillColor: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          depth: 6,
-                          intensity: 0.7,
-                          color: Colors.white.withOpacity(0.95),
-                          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-                        ),
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Confirm Password",
-                            labelStyle: GoogleFonts.orbitron(),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                            filled: true,
-                            fillColor: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      _GlowingButton(
-                        label: "Sign Up",
-                        onPressed: () {},
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            child: Text(
-                              "Already have an account? Login",
-                              style: GoogleFonts.orbitron(
-                                color: Color(0xFF6C3EF4),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                child: _SignupForm(),
+              ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/login'),
+                child: Text(
+                  'Already have an account? Login',
+                  style: GoogleFonts.poppins(
+                    color: Colors.tealAccent,
+                    fontSize: 16,
                   ),
                 ),
               ),
+              const SizedBox(height: 48),
+              const Footer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SignupForm extends StatefulWidget {
+  @override
+  State<_SignupForm> createState() => _SignupFormState();
+}
+
+class _SignupFormState extends State<_SignupForm> {
+  final _formKey = GlobalKey<FormState>();
+  String? _name, _email, _password;
+  bool _obscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Name',
+              labelStyle: GoogleFonts.poppins(color: Colors.white70),
+              filled: true,
+              fillColor: const Color(0xFF181A2A),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            ),
+            style: GoogleFonts.poppins(color: Colors.white),
+            validator: (value) => value == null || value.isEmpty ? 'Please enter your name' : null,
+            onSaved: (value) => _name = value,
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Email',
+              labelStyle: GoogleFonts.poppins(color: Colors.white70),
+              filled: true,
+              fillColor: const Color(0xFF181A2A),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            ),
+            style: GoogleFonts.poppins(color: Colors.white),
+            validator: (value) => value == null || !value.contains('@') ? 'Please enter a valid email' : null,
+            onSaved: (value) => _email = value,
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            obscureText: _obscure,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              labelStyle: GoogleFonts.poppins(color: Colors.white70),
+              filled: true,
+              fillColor: const Color(0xFF181A2A),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+              suffixIcon: IconButton(
+                icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off, color: Colors.tealAccent),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              ),
+            ),
+            style: GoogleFonts.poppins(color: Colors.white),
+            validator: (value) => value == null || value.length < 6 ? 'Password must be at least 6 characters' : null,
+            onSaved: (value) => _password = value,
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  try {
+                    final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: _email!,
+                      password: _password!,
+                    );
+                    await usersCollection.doc(userCredential.user!.uid).set({
+                      'name': _name,
+                      'email': _email,
+                      'createdAt': DateTime.now().toIso8601String(),
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Signup successful!')),
+                    );
+                    // TODO: Navigate to home or dashboard
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Signup failed: $e')),
+                    );
+                  }
+                }
+              },
+              child: Text('Sign Up', style: GoogleFonts.poppins(fontSize: 18)),
             ),
           ),
         ],
@@ -320,7 +230,7 @@ class _GlowingButtonState extends State<_GlowingButton> {
             shadowColor: Colors.tealAccent.withOpacity(0.5),
           ),
           onPressed: widget.onPressed,
-          child: Text(widget.label, style: GoogleFonts.orbitron(fontWeight: FontWeight.bold)),
+          child: Text(widget.label, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
         ),
       ),
     );

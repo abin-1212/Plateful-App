@@ -1,163 +1,184 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
     return Scaffold(
-      body: Column(
+      backgroundColor: const Color(0xFFF8F9FB),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Navbar(),
+            _FAQHeader(isMobile: isMobile),
+            _FAQList(isMobile: isMobile),
+            Footer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FAQHeader extends StatelessWidget {
+  final bool isMobile;
+  const _FAQHeader({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 48 : 72,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Navbar(),
-          // Hero Section
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-            child: GlassContainer.clearGlass(
-              width: 900, // Added width for hero section glass container
-              height: 220, // Added height for hero section glass container
-              borderRadius: BorderRadius.circular(32),
-              blur: 16,
-              borderWidth: 2,
-              borderColor: Colors.white.withOpacity(0.18),
-              elevation: 8,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.18),
-                  Colors.deepPurple.withOpacity(0.12),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TyperAnimatedText(
-                          'Plateful FAQ',
-                          textStyle: GoogleFonts.orbitron(
-                            fontSize: 38,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 2,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 16,
-                                color: Colors.tealAccent.withOpacity(0.7),
-                                offset: Offset(0, 0),
-                              ),
-                            ],
-                          ),
-                          speed: Duration(milliseconds: 40),
-                        ),
-                      ],
-                      isRepeatingAnimation: false,
-                    ),
-                    SizedBox(height: 16),
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        FadeAnimatedText(
-                          'Frequently Asked Questions about Plateful.',
-                          textStyle: GoogleFonts.orbitron(
-                            fontSize: 24,
-                            color: Colors.tealAccent,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          duration: Duration(milliseconds: 1800),
-                        ),
-                      ],
-                      isRepeatingAnimation: false,
-                    ),
-                  ],
-                ),
-              ),
+          Text(
+            'Frequently Asked Questions',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w800,
+              fontSize: isMobile ? 32 : 44,
+              letterSpacing: 1.2,
             ),
+            textAlign: TextAlign.center,
           ),
-          // FAQ Content Section
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Questions & Answers',
-                  style: GoogleFonts.orbitron(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                ),
-                SizedBox(height: 16),
-                _FAQ3DCard(
-                  question: 'What is Plateful?',
-                  answer: 'Plateful is India’s first food surplus marketplace.',
-                ),
-                SizedBox(height: 24),
-                _FAQ3DCard(
-                  question: 'How does Plateful work?',
-                  answer: 'We connect restaurants and customers to reduce food waste.',
-                ),
-                // Add more FAQ items as needed
-              ],
+          const SizedBox(height: 18),
+          Text(
+            'Find answers to common questions about Plateful.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w500,
+              fontSize: isMobile ? 16 : 20,
             ),
+            textAlign: TextAlign.center,
           ),
-          const Footer(),
         ],
       ),
     );
   }
 }
 
-class _FAQ3DCard extends StatefulWidget {
-  final String question;
-  final String answer;
-  const _FAQ3DCard({required this.question, required this.answer});
+class _FAQList extends StatefulWidget {
+  final bool isMobile;
+  const _FAQList({required this.isMobile});
 
   @override
-  State<_FAQ3DCard> createState() => _FAQ3DCardState();
+  State<_FAQList> createState() => _FAQListState();
 }
 
-class _FAQ3DCardState extends State<_FAQ3DCard> {
-  bool _hovering = false;
+class _FAQListState extends State<_FAQList> {
+  int? _expandedIndex;
+
+  final faqs = [
+    {
+      'q': 'What is Plateful?',
+      'a': 'Plateful is a platform for discovering, ordering, and enjoying curated food packs from top brands, delivered fresh to your doorstep.'
+    },
+    {
+      'q': 'How do I order a food pack?',
+      'a': 'Browse our featured packs, add your favorites to cart, and checkout securely. Your food will be delivered fresh and fast.'
+    },
+    {
+      'q': 'Is Plateful available in my city?',
+      'a': 'We are rapidly expanding! Enter your location on the home page to check availability.'
+    },
+    {
+      'q': 'How do I become a partner?',
+      'a': 'Visit our Partner page and fill out the form. Our team will get in touch with you soon.'
+    },
+    {
+      'q': 'What payment methods are accepted?',
+      'a': 'We accept all major credit/debit cards, UPI, and popular wallets.'
+    },
+    {
+      'q': 'How do I contact support?',
+      'a': 'You can reach us via the Contact page or email us at support@plateful.com.'
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOut,
-        transform: _hovering ? (Matrix4.identity()..translate(0.0, -8.0, 0.0)..scale(1.03)) : Matrix4.identity(),
-        child: Neumorphic(
-          style: NeumorphicStyle(
-            depth: _hovering ? 16 : 8,
-            intensity: 0.7,
-            surfaceIntensity: 0.25,
-            color: Colors.white.withOpacity(0.95),
-            shadowLightColor: Colors.tealAccent,
-            shadowDarkColor: Colors.deepPurple,
-            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(24)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.question,
-                  style: GoogleFonts.orbitron(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.deepPurple),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: widget.isMobile ? 8 : 64,
+        vertical: widget.isMobile ? 32 : 48,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ...faqs.asMap().entries.map((entry) {
+            final i = entry.key;
+            final faq = entry.value;
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+                elevation: 0,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(18),
+                  onTap: () => setState(() => _expandedIndex = _expandedIndex == i ? null : i),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: widget.isMobile ? 18 : 32,
+                      vertical: widget.isMobile ? 18 : 24,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                faq['q']!,
+                                style: GoogleFonts.poppins(
+                                  color: Colors.deepPurple,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: widget.isMobile ? 16 : 18,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              _expandedIndex == i ? Icons.expand_less : Icons.expand_more,
+                              color: Colors.tealAccent,
+                              size: 28,
+                            ),
+                          ],
+                        ),
+                        AnimatedCrossFade(
+                          firstChild: const SizedBox.shrink(),
+                          secondChild: Padding(
+                            padding: const EdgeInsets.only(top: 14),
+                            child: Text(
+                              faq['a']!,
+                              style: GoogleFonts.poppins(
+                                color: Colors.deepPurple.withOpacity(0.8),
+                                fontWeight: FontWeight.w400,
+                                fontSize: widget.isMobile ? 14 : 16,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          crossFadeState: _expandedIndex == i ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                          duration: const Duration(milliseconds: 250),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  widget.answer,
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }

@@ -1,217 +1,183 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class DownloadScreen extends StatelessWidget {
   const DownloadScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
     return Scaffold(
-      body: Column(
+      backgroundColor: const Color(0xFFF8F9FB),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Navbar(),
+            _DownloadHeader(isMobile: isMobile),
+            _DownloadContent(isMobile: isMobile),
+            Footer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DownloadHeader extends StatelessWidget {
+  final bool isMobile;
+  const _DownloadHeader({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 18 : 64,
+        vertical: isMobile ? 48 : 72,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Navbar(),
-          // Hero Section
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-            child: GlassContainer.clearGlass(
-              width: 900, // Added width for hero section glass container
-              height: 220, // Added height for hero section glass container
-              borderRadius: BorderRadius.circular(32),
-              blur: 16,
-              borderWidth: 2,
-              borderColor: Colors.white.withOpacity(0.18),
-              elevation: 8,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.18),
-                  Colors.deepPurple.withOpacity(0.12),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TyperAnimatedText(
-                          'Download Plateful App',
-                          textStyle: GoogleFonts.orbitron(
-                            fontSize: 38,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            letterSpacing: 2,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 16,
-                                color: Colors.tealAccent.withOpacity(0.7),
-                                offset: Offset(0, 0),
-                              ),
-                            ],
-                          ),
-                          speed: Duration(milliseconds: 40),
-                        ),
-                      ],
-                      isRepeatingAnimation: false,
-                    ),
-                    SizedBox(height: 16),
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        FadeAnimatedText(
-                          'Get Plateful on your device and start saving today!',
-                          textStyle: GoogleFonts.orbitron(
-                            fontSize: 24,
-                            color: Colors.tealAccent,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          duration: Duration(milliseconds: 1800),
-                        ),
-                      ],
-                      isRepeatingAnimation: false,
-                    ),
-                    SizedBox(height: 32),
-                    Row(
-                      children: [
-                        _GlowingButton(
-                          icon: Icons.android,
-                          label: 'Get it on Google Play',
-                          onPressed: () {},
-                        ),
-                        SizedBox(width: 16),
-                        _GlowingButton(
-                          icon: Icons.apple,
-                          label: 'Download on the App Store',
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+          Text(
+            'Get the Plateful App',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple,
+              fontWeight: FontWeight.w800,
+              fontSize: isMobile ? 32 : 44,
+              letterSpacing: 1.2,
             ),
+            textAlign: TextAlign.center,
           ),
-          // Download Content Section
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-            child: _Download3DCard(),
+          const SizedBox(height: 18),
+          Text(
+            'Order curated food packs anytime, anywhere. Download Plateful for Android and iOS.',
+            style: GoogleFonts.poppins(
+              color: Colors.deepPurple.withOpacity(0.8),
+              fontWeight: FontWeight.w500,
+              fontSize: isMobile ? 16 : 20,
+            ),
+            textAlign: TextAlign.center,
           ),
-          const Footer(),
         ],
       ),
     );
   }
 }
 
-class _GlowingButton extends StatefulWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onPressed;
-  const _GlowingButton({required this.icon, required this.label, required this.onPressed});
+class _DownloadContent extends StatelessWidget {
+  final bool isMobile;
+  const _DownloadContent({required this.isMobile});
 
-  @override
-  State<_GlowingButton> createState() => _GlowingButtonState();
-}
-
-class _GlowingButtonState extends State<_GlowingButton> {
-  bool _hovering = false;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOut,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: _hovering
-              ? [
-                  BoxShadow(
-                    color: Colors.tealAccent.withOpacity(0.5),
-                    blurRadius: 18,
-                    spreadRadius: 2,
-                  ),
-                ]
-              : [],
-          gradient: _hovering
-              ? LinearGradient(
-                  colors: [
-                    Colors.deepPurpleAccent.withOpacity(0.7),
-                    Colors.tealAccent.withOpacity(0.7),
-                  ],
-                )
-              : null,
-        ),
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white.withOpacity(_hovering ? 0.85 : 0.7),
-            foregroundColor: const Color(0xFF6C3EF4),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 8 : 64,
+        vertical: isMobile ? 32 : 48,
+      ),
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _AppBadges(isMobile: true),
+                const SizedBox(height: 32),
+                _QRCode(isMobile: true),
+                const SizedBox(height: 32),
+                _DownloadDescription(isMobile: true),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 4, child: _AppBadges(isMobile: false)),
+                const SizedBox(width: 48),
+                Expanded(flex: 3, child: _QRCode(isMobile: false)),
+                const SizedBox(width: 48),
+                Expanded(flex: 5, child: _DownloadDescription(isMobile: false)),
+              ],
             ),
-            elevation: _hovering ? 12 : 4,
-            shadowColor: Colors.tealAccent.withOpacity(0.5),
+    );
+  }
+}
+
+class _AppBadges extends StatelessWidget {
+  final bool isMobile;
+  const _AppBadges({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {},
+          child: Image.network(
+            'https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg',
+            height: isMobile ? 54 : 64,
           ),
-          onPressed: widget.onPressed,
-          icon: Icon(widget.icon),
-          label: Text(widget.label),
         ),
+        const SizedBox(height: 18),
+        GestureDetector(
+          onTap: () {},
+          child: Image.network(
+            'https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg',
+            height: isMobile ? 54 : 64,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _QRCode extends StatelessWidget {
+  final bool isMobile;
+  const _QRCode({required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.withOpacity(0.08),
+            blurRadius: 16,
+            spreadRadius: 2,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Image.network(
+        'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://plateful.com',
+        height: isMobile ? 120 : 180,
+        width: isMobile ? 120 : 180,
+        fit: BoxFit.contain,
       ),
     );
   }
 }
 
-class _Download3DCard extends StatefulWidget {
-  @override
-  State<_Download3DCard> createState() => _Download3DCardState();
-}
+class _DownloadDescription extends StatelessWidget {
+  final bool isMobile;
+  const _DownloadDescription({required this.isMobile});
 
-class _Download3DCardState extends State<_Download3DCard> {
-  bool _hovering = false;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovering = true),
-      onExit: (_) => setState(() => _hovering = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOut,
-        transform: _hovering ? (Matrix4.identity()..translate(0.0, -8.0, 0.0)..scale(1.03)) : Matrix4.identity(),
-        child: Neumorphic(
-          style: NeumorphicStyle(
-            depth: _hovering ? 16 : 8,
-            intensity: 0.7,
-            surfaceIntensity: 0.25,
-            color: Colors.white.withOpacity(0.95),
-            shadowLightColor: Colors.tealAccent,
-            shadowDarkColor: Colors.deepPurple,
-            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(24)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'How to Download',
-                  style: GoogleFonts.orbitron(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  '1. Click the button above for your device.\n2. Follow the instructions to install Plateful.\n3. Sign up and start saving!',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
-                ),
-              ],
-            ),
-          ),
-        ),
+    return Text(
+      'With the Plateful app, you can browse, order, and track curated food packs from top brands, all in one place. Enjoy exclusive app-only offers and a seamless ordering experience on Android and iOS.',
+      style: GoogleFonts.poppins(
+        color: Colors.deepPurple.withOpacity(0.8),
+        fontWeight: FontWeight.w400,
+        fontSize: isMobile ? 15 : 18,
+        height: 1.6,
       ),
+      textAlign: isMobile ? TextAlign.center : TextAlign.left,
     );
   }
 } 
