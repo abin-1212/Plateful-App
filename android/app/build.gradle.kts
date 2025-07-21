@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.plateful"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion   // <-- REMOVED
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
