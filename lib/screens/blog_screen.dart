@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
+import '../widgets/modern_card.dart';
+import '../widgets/modern_section.dart';
+import '../constants/app_constants.dart';
 
 class BlogScreen extends StatelessWidget {
   const BlogScreen({super.key});
@@ -9,15 +12,17 @@ class BlogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 800;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
-      body: SingleChildScrollView(
+    return ModernScaffold(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            Navbar(),
-            _BlogHeader(isMobile: isMobile),
-            _BlogList(isMobile: isMobile),
-            Footer(),
+            ModernSection(
+              child: _BlogHeader(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _BlogList(isMobile: isMobile),
+            ),
+            ModernFooter(),
           ],
         ),
       ),

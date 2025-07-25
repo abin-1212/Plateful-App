@@ -20,62 +20,74 @@ class SignupScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(100),
         child: Navbar(),
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFF8FBFF), Color(0xFFE8ECF3)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 48),
-              Text(
-                'Create Your Plateful Account',
-                style: GoogleFonts.poppins(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Sign up to start saving on great food',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  color: Colors.tealAccent,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              Container(
-                width: 400,
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF23244D),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.tealAccent.withOpacity(0.08),
-                      blurRadius: 16,
-                      spreadRadius: 2,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 48),
+                  Text(
+                    'Create Your Plateful Account',
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-                child: _SignupForm(),
-              ),
-              const SizedBox(height: 24),
-              TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/login'),
-                child: Text(
-                  'Already have an account? Login',
-                  style: GoogleFonts.poppins(
-                    color: Colors.tealAccent,
-                    fontSize: 16,
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Sign up to start saving on great food',
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      color: Colors.tealAccent,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  Container(
+                    width: 400,
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF23244D),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.tealAccent.withOpacity(0.08),
+                          blurRadius: 16,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: _SignupForm(),
+                  ),
+                  const SizedBox(height: 24),
+                  TextButton(
+                    onPressed: () => Navigator.pushNamed(context, '/login'),
+                    child: Text(
+                      'Already have an account? Login',
+                      style: GoogleFonts.poppins(
+                        color: Colors.tealAccent,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 48),
+                  const Footer(),
+                ],
               ),
-              const SizedBox(height: 48),
-              const Footer(),
-            ],
+            ),
           ),
         ),
       ),

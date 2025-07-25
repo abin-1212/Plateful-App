@@ -3,8 +3,6 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -43,61 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAJJu8yMJxLCTIJ2zSIzdZwT8lk1N8Ip3Q',
-    appId: '1:833668736619:web:79dce4a66ae18342aef32e',
-    messagingSenderId: '833668736619',
-    projectId: 'plateful-2285c',
-    authDomain: 'plateful-2285c.firebaseapp.com',
-    storageBucket: 'plateful-2285c.firebasestorage.app',
-    measurementId: 'G-NJ3Y3F167X',
+    apiKey: 'AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA',
+    appId: '1:1009788777874:web:376cde409e62a0ed0a7d4b',
+    messagingSenderId: '1009788777874',
+    projectId: 'plateful-8c60b',
+    authDomain: 'plateful-8c60b.firebaseapp.com',
+    storageBucket: 'plateful-8c60b.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyByPC-UZQAFgodM_R9ckxrAkYWgLHqiBio',
-    appId: '1:833668736619:android:d7f730ee3e68e0d8aef32e',
-    messagingSenderId: '833668736619',
-    projectId: 'plateful-2285c',
-    storageBucket: 'plateful-2285c.firebasestorage.app',
+    apiKey: 'AIzaSyDJo_b_7vXjrWY7qykLex98AiCN91MtK1Y',
+    appId: '1:1009788777874:android:c57bcb5dc501ec3a0a7d4b',
+    messagingSenderId: '1009788777874',
+    projectId: 'plateful-8c60b',
+    storageBucket: 'plateful-8c60b.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA31_lqjEbiKlfzePnhCv3Ack9aAns2JT4',
-    appId: '1:833668736619:ios:2d172f58115da9b3aef32e',
-    messagingSenderId: '833668736619',
-    projectId: 'plateful-2285c',
-    storageBucket: 'plateful-2285c.firebasestorage.app',
+    apiKey: 'AIzaSyAQBCPXv5-8am1kBcGsx5ft0TanFM8Bh0c',
+    appId: '1:1009788777874:ios:54c7df3b4bf57a6d0a7d4b',
+    messagingSenderId: '1009788777874',
+    projectId: 'plateful-8c60b',
+    storageBucket: 'plateful-8c60b.firebasestorage.app',
     iosBundleId: 'com.example.plateful',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA31_lqjEbiKlfzePnhCv3Ack9aAns2JT4',
-    appId: '1:833668736619:ios:2d172f58115da9b3aef32e',
-    messagingSenderId: '833668736619',
-    projectId: 'plateful-2285c',
-    storageBucket: 'plateful-2285c.firebasestorage.app',
+    apiKey: 'AIzaSyAQBCPXv5-8am1kBcGsx5ft0TanFM8Bh0c',
+    appId: '1:1009788777874:ios:54c7df3b4bf57a6d0a7d4b',
+    messagingSenderId: '1009788777874',
+    projectId: 'plateful-8c60b',
+    storageBucket: 'plateful-8c60b.firebasestorage.app',
     iosBundleId: 'com.example.plateful',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAJJu8yMJxLCTIJ2zSIzdZwT8lk1N8Ip3Q',
-    appId: '1:833668736619:web:5b12d7392be4e4aaaef32e',
-    messagingSenderId: '833668736619',
-    projectId: 'plateful-2285c',
-    authDomain: 'plateful-2285c.firebaseapp.com',
-    storageBucket: 'plateful-2285c.firebasestorage.app',
-    measurementId: 'G-DKFQK9Z34P',
+    apiKey: 'AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA',
+    appId: '1:1009788777874:web:71e43174f7b5caa60a7d4b',
+    messagingSenderId: '1009788777874',
+    projectId: 'plateful-8c60b',
+    authDomain: 'plateful-8c60b.firebaseapp.com',
+    storageBucket: 'plateful-8c60b.firebasestorage.app',
   );
-}
-
-Future<int> getPredictedDemand(Map<String, dynamic> input) async {
-  final response = await http.post(
-    Uri.parse('http://localhost:5000/predict'),
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode(input),
-  );
-  if (response.statusCode == 200) {
-    return jsonDecode(response.body)['predicted_demand'];
-  } else {
-    throw Exception('Failed to get prediction');
-  }
 }

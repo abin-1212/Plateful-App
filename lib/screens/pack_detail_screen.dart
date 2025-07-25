@@ -1,119 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../widgets/navbar.dart';
-import '../widgets/footer.dart';
-import '../mock_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/firebase_service.dart';
+import '../widgets/modern_card.dart';
+import '../widgets/modern_button.dart';
+import '../widgets/modern_section.dart';
+import '../widgets/modern_scaffold.dart';
+import '../widgets/modern_loading.dart';
 
 class PackDetailScreen extends StatelessWidget {
-  final int packId;
+  final String packId;
   const PackDetailScreen({super.key, required this.packId});
 
   @override
   Widget build(BuildContext context) {
-    final pack = (packId > 0 && packId <= mockPacks.length) ? mockPacks[packId - 1] : null;
-    if (pack == null) {
-      return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100),
-          child: Navbar(),
-        ),
-        body: Center(
-          child: Text(
-            'Pack not found',
-            style: GoogleFonts.poppins(fontSize: 24, color: Colors.deepPurple, fontWeight: FontWeight.w600),
-          ),
-        ),
-      );
-    }
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: Navbar(),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 48),
-              Text(
-                pack['title'],
-                style: GoogleFonts.poppins(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Image.network(
-                  pack['image'],
-                  height: 220,
-                  width: 340,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                pack['desc'],
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  color: Colors.deepPurple.withOpacity(0.8),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                pack['price'],
-                style: GoogleFonts.poppins(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.tealAccent[700],
-                ),
-              ),
-              if (pack['offer'] != null) ...[
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.tealAccent.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    pack['offer'],
-                    style: GoogleFonts.poppins(
-                      color: Colors.tealAccent[700],
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
+    return ModernScaffold(
+      centerContent: true,
+      child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future: FirebaseService.firestore.collection('food_packs').doc(packId).get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const ModernLoading();
+          final data = snapshot.data!.data();
+          if (data == null) {
+            return const Text('Food pack not found.');
+          }
+          return ModernSection(
+            child: Center(
+              child: ModernCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (data['imageUrl'] != null && data['imageUrl'] != '')
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: Image.network(data['imageUrl'], height: 180, fit: BoxFit.cover),
+                      ),
+                    const SizedBox(height: 20),
+                    Text(data['title'] ?? '', style: Theme.of(context).textTheme.headlineMedium),
+                    const SizedBox(height: 8),
+                    Text('₹${data['price'] ?? '--'}', style: Theme.of(context).textTheme.bodyLarge),
+                    const SizedBox(height: 8),
+                    Text('Expiry: ${data['expiryTime'] ?? '--'}', style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(height: 8),
+                    Text('Hygiene Rating: ${data['hygieneRating'] ?? '--'} ★', style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(height: 20),
+                    ModernButton(
+                      text: data['reserved'] == true ? 'Reserved' : 'Reserve',
+                      isPrimary: data['reserved'] != true,
+                      onPressed: data['reserved'] == true
+                          ? null
+                          : () async {
+                              final user = FirebaseService().getCurrentUser();
+                              if (user != null) {
+                                await FirebaseService().reserveFoodPack(
+                                  packId: packId,
+                                  userId: user.uid,
+                                );
+                              }
+                            },
                     ),
-                  ),
+                  ],
                 ),
-              ],
-              const SizedBox(height: 32),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.tealAccent,
-                  foregroundColor: Colors.deepPurple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 18),
-                  textStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17,
-                  ),
-                ),
-                onPressed: () => Navigator.pushNamed(context, '/confirmation'),
-                child: const Text('Reserve Now'),
               ),
-              const SizedBox(height: 48),
-              const Footer(),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

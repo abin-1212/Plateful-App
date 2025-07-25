@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
+import '../widgets/modern_card.dart';
+import '../widgets/modern_section.dart';
+import '../constants/app_constants.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -9,18 +12,26 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 800;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
-      body: SingleChildScrollView(
+    return ModernScaffold(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            Navbar(),
-            _AboutHeader(isMobile: isMobile),
-            _AboutStory(isMobile: isMobile),
-            _AboutMissionVision(isMobile: isMobile),
-            _AboutValues(isMobile: isMobile),
-            _AboutTeam(isMobile: isMobile),
-            Footer(),
+            ModernSection(
+              child: _AboutHeader(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _AboutStory(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _AboutMissionVision(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _AboutValues(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _AboutTeam(isMobile: isMobile),
+            ),
+            ModernFooter(),
           ],
         ),
       ),

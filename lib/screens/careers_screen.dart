@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
+import '../widgets/modern_card.dart';
+import '../widgets/modern_section.dart';
+import '../constants/app_constants.dart';
 
 class CareersScreen extends StatelessWidget {
   const CareersScreen({super.key});
@@ -9,18 +12,26 @@ class CareersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 800;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
-      body: SingleChildScrollView(
+    return ModernScaffold(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            Navbar(),
-            _CareersHeader(isMobile: isMobile),
-            _CareersIntro(isMobile: isMobile),
-            _OpenPositions(isMobile: isMobile),
-            _BenefitsSection(isMobile: isMobile),
-            _CareersCTA(isMobile: isMobile),
-            Footer(),
+            ModernSection(
+              child: _CareersHeader(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _CareersIntro(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _OpenPositions(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _BenefitsSection(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _CareersCTA(isMobile: isMobile),
+            ),
+            ModernFooter(),
           ],
         ),
       ),

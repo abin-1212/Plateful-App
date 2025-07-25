@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navbar.dart';
 import '../widgets/footer.dart';
+import '../widgets/modern_card.dart';
+import '../widgets/modern_section.dart';
+import '../constants/app_constants.dart';
 
 class DownloadScreen extends StatelessWidget {
   const DownloadScreen({super.key});
@@ -9,15 +12,17 @@ class DownloadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 800;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
-      body: SingleChildScrollView(
+    return ModernScaffold(
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            Navbar(),
-            _DownloadHeader(isMobile: isMobile),
-            _DownloadContent(isMobile: isMobile),
-            Footer(),
+            ModernSection(
+              child: _DownloadHeader(isMobile: isMobile),
+            ),
+            ModernSection(
+              child: _DownloadContent(isMobile: isMobile),
+            ),
+            ModernFooter(),
           ],
         ),
       ),

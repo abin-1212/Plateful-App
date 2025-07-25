@@ -9,24 +9,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  firebase_core: ^3.15.1
-  firebase_auth: ^5.6.2
+  cupertino_icons: ^1.0.6
+  go_router: ^13.0.0
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.7.0
+  cloud_firestore: ^5.6.12
+  firebase_messaging: ^15.2.10
+  google_fonts: ^6.1.0
+  provider: ^6.1.1
   lottie: ^3.3.1
   glass_kit: ^4.0.1
   animated_text_kit: ^4.2.2
-  google_fonts: ^6.1.0
   animations: ^2.0.8
   flutter_neumorphic_plus: ^3.4.0
   js: ^0.7.2
-  go_router: ^13.2.2
-  cloud_firestore: ^5.6.11
-  firebase_storage: ^12.1.5
-  firebase_messaging: ^15.0.4
+  firebase_storage: ^12.4.10
   google_sign_in: ^6.2.1
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
-  provider: ^6.1.2
   syncfusion_flutter_charts: ^30.1.40
   syncfusion_flutter_core: ^30.1.40
   qr_flutter: ^4.1.0
@@ -56,6 +56,13 @@ flutter:
   uses-material-design: true
   
   assets:
+    - assets/animations/food_lover.json
+    - assets/animations/ai_platform.json
+    - assets/animations/restaurant.json
+    - assets/images/hero_food_bg.jpg
+    - assets/images/how_it_works_bg.jpg
+    - assets/images/features_bg.jpg
+    - assets/images/community_bg.jpg
     - assets/animations/
     - assets/images/
     - assets/icons/

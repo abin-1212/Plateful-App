@@ -1,3 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class AppColors {
+  static const Color background = Color(0xFFF8F9FB);
+  static const Color glass = Color(0x80FFFFFF);
+  static const Color primary = Color(0xFF0071E3); // Apple blue
+  static const Color accent = Color(0xFF34C759); // Apple green
+  static const Color textDark = Color(0xFF1C1C1E);
+  static const Color textLight = Color(0xFF8E8E93);
+  static const Color shadow = Color(0x1A000000);
+  static const Color glassBorder = Color(0x33FFFFFF);
+  static const Color heroOverlay = Color(0xCCF8F9FB);
+}
+
+class AppGradients {
+  static const LinearGradient background = LinearGradient(
+    colors: [Color(0xFFF8F9FB), Color(0xFFE5E9F2)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient glass = LinearGradient(
+    colors: [Color(0x80FFFFFF), Color(0x40FFFFFF)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient pastel = LinearGradient(
+    colors: [
+      Color(0xFFe0eafc),
+      Color(0xFFcfdef3),
+      Color(0xFFf5f7fa),
+      Color(0xFFc9e7ff),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+}
+
+class AppFonts {
+  static const String primary = 'Inter';
+  static const String fallback = 'sans-serif';
+}
+
+class AppTextStyles {
+  static final TextStyle headline = GoogleFonts.inter(
+    fontWeight: FontWeight.w800,
+    fontSize: 54,
+    color: AppColors.textDark,
+    letterSpacing: -1.5,
+  );
+  static final TextStyle subhead = GoogleFonts.inter(
+    fontWeight: FontWeight.w700,
+    fontSize: 28,
+    color: AppColors.textDark,
+    letterSpacing: -0.5,
+  );
+  static final TextStyle body = GoogleFonts.inter(
+    fontWeight: FontWeight.w600,
+    fontSize: 20,
+    color: AppColors.textDark,
+    letterSpacing: 0.1,
+  );
+  static final TextStyle button = GoogleFonts.inter(
+    fontWeight: FontWeight.w700,
+    fontSize: 22,
+    color: Colors.white,
+    letterSpacing: 0.5,
+  );
+}
+
+class AppSpacing {
+  static const double xl = 64.0;
+  static const double lg = 40.0;
+  static const double md = 24.0;
+  static const double sm = 16.0;
+  static const double xs = 8.0;
+}
+
+class AppShadows {
+  static const List<BoxShadow> soft = [
+    BoxShadow(
+      color: AppColors.shadow,
+      blurRadius: 32,
+      offset: Offset(0, 8),
+    ),
+  ];
+  static const List<BoxShadow> glass = [
+    BoxShadow(
+      color: AppColors.glassBorder,
+      blurRadius: 24,
+      offset: Offset(0, 4),
+    ),
+  ];
+}
+
+// Parallax and hero image constants
+class AppImages {
+  static const String heroBg = 'assets/images/hero_food_bg.jpg';
+  static const String howItWorksBg = 'assets/images/how_it_works_bg.jpg';
+  static const String featuresBg = 'assets/images/features_bg.jpg';
+  static const String communityBg = 'assets/images/community_bg.jpg';
+}
+
 class AppRoutes {
   // Auth routes
   static const String splash = '/splash';
@@ -256,4 +359,10 @@ class SuccessMessages {
   static const String feedbackSubmitted = 'Feedback submitted successfully!';
   static const String settingsSaved = 'Settings saved successfully!';
   static const String imageUploaded = 'Image uploaded successfully!';
+} 
+
+class AppRoles {
+  static const String user = 'user';
+  static const String vendor = 'vendor';
+  static const String admin = 'admin';
 } 
