@@ -22,7 +22,16 @@ import 'screens/test_image_gallery.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FirebaseService.initialize();
+  
+  print('Starting Firebase initialization...');
+  try {
+    await FirebaseService.initialize();
+    print('Firebase initialization completed successfully');
+  } catch (e) {
+    print('Firebase initialization failed: $e');
+    // Continue with app startup even if Firebase fails
+  }
+  
   runApp(const PlatefulApp());
 }
 

@@ -12,23 +12,44 @@ class FirebaseService {
 
   static FirebaseAuth get auth => FirebaseAuth.instance;
   static FirebaseFirestore get firestore => FirebaseFirestore.instance;
+  
+  static bool _isInitialized = false;
 
   static Future<void> initialize() async {
-    if (kIsWeb) {
-      await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: 'AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA',
-          appId: '1:1009788777874:web:376cde409e62a0ed0a7d4b',
-          messagingSenderId: '1009788777874',
-          projectId: 'plateful-8c60b',
-          authDomain: 'plateful-8c60b.firebaseapp.com',
-          storageBucket: 'plateful-8c60b.firebasestorage.app',
-        ),
-      );
-    } else {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+    if (_isInitialized) return;
+    
+    try {
+      if (kIsWeb) {
+        // For web, use the manual configuration to ensure it works
+        await Firebase.initializeApp(
+          options: const FirebaseOptions(
+            apiKey: 'AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA',
+            appId: '1:1009788777874:web:376cde409e62a0ed0a7d4b',
+            messagingSenderId: '1009788777874',
+            projectId: 'plateful-8c60b',
+            authDomain: 'plateful-8c60b.firebaseapp.com',
+            storageBucket: 'plateful-8c60b.firebasestorage.app',
+          ),
+        );
+        print('Firebase initialized for web successfully');
+      } else {
+        // For other platforms, use the auto-generated options
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+        print('Firebase initialized for ${defaultTargetPlatform} successfully');
+      }
+      _isInitialized = true;
+    } catch (e) {
+      print('Firebase initialization error: $e');
+      rethrow;
+    }
+  }
+
+  // Ensure Firebase is initialized before any operations
+  static Future<void> _ensureInitialized() async {
+    if (!_isInitialized) {
+      await initialize();
     }
   }
 
@@ -39,20 +60,27 @@ class FirebaseService {
     required String password,
     required String role,
   }) async {
-    final userCredential = await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    final user = userCredential.user;
-    if (user != null) {
-      await saveUserToFirestore(
-        uid: user.uid,
-        name: name,
+    await _ensureInitialized();
+    
+    try {
+      final userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
-        role: role,
+        password: password,
       );
+      final user = userCredential.user;
+      if (user != null) {
+        await saveUserToFirestore(
+          uid: user.uid,
+          name: name,
+          email: email,
+          role: role,
+        );
+      }
+      return user;
+    } catch (e) {
+      print('Signup error: $e');
+      rethrow;
     }
-    return user;
   }
 
   // Sign in with email and password
@@ -60,15 +88,23 @@ class FirebaseService {
     required String email,
     required String password,
   }) async {
-    final userCredential = await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return userCredential.user;
+    await _ensureInitialized();
+    
+    try {
+      final userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } catch (e) {
+      print('Signin error: $e');
+      rethrow;
+    }
   }
 
   // Sign out
   Future<void> signOut() async {
+    await _ensureInitialized();
     await auth.signOut();
   }
 
@@ -79,12 +115,14 @@ class FirebaseService {
 
   // Get user role from Firestore
   Future<String?> getUserRole(String uid) async {
+    await _ensureInitialized();
     final doc = await firestore.collection('users').doc(uid).get();
     return doc.data()?['role'] as String?;
   }
 
   // Fetch user model from Firestore
   Future<UserModel?> getUserModel(String uid) async {
+    await _ensureInitialized();
     final doc = await firestore.collection('users').doc(uid).get();
     if (doc.exists) {
       return UserModel.fromMap(doc.data()!);
@@ -99,6 +137,7 @@ class FirebaseService {
     required String email,
     required String role,
   }) async {
+    await _ensureInitialized();
     await firestore.collection('users').doc(uid).set({
       'uid': uid,
       'name': name,
@@ -128,6 +167,7 @@ class FirebaseService {
 
   // Add food pack (for vendor)
   Future<void> addFoodPack(Map<String, dynamic> data) async {
+    await _ensureInitialized();
     await firestore.collection('food_packs').add({
       ...data,
       'createdAt': FieldValue.serverTimestamp(),
@@ -136,11 +176,13 @@ class FirebaseService {
 
   // Update food pack
   Future<void> updateFoodPack(String packId, Map<String, dynamic> data) async {
+    await _ensureInitialized();
     await firestore.collection('food_packs').doc(packId).update(data);
   }
 
   // Delete food pack
   Future<void> deleteFoodPack(String packId) async {
+    await _ensureInitialized();
     await firestore.collection('food_packs').doc(packId).delete();
   }
 
@@ -149,6 +191,7 @@ class FirebaseService {
     required String packId,
     required String userId,
   }) async {
+    await _ensureInitialized();
     await firestore.collection('reservations').add({
       'packId': packId,
       'userId': userId,
@@ -173,6 +216,7 @@ class FirebaseService {
     required int rating,
     required String comment,
   }) async {
+    await _ensureInitialized();
     await firestore.collection('feedback').add({
       'userId': userId,
       'packId': packId,

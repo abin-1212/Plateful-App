@@ -53,12 +53,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       _error = null;
     });
     try {
+      print('Starting signup process...');
       final user = await FirebaseService().signUpWithEmail(
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
         role: _role!,
       );
+      print('Signup completed, user: ${user?.uid}');
       if (user != null) {
         if (_role == AppRoles.user) {
           if (mounted) context.go('/dashboard/user');
@@ -68,10 +70,27 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
           if (mounted) context.go('/dashboard/admin');
         }
       } else {
-        setState(() => _error = 'Signup failed.');
+        setState(() => _error = 'Signup failed - no user returned.');
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      print('Signup error: $e');
+      String errorMessage = 'Signup failed.';
+      
+      if (e.toString().contains('configuration-not-found')) {
+        errorMessage = 'Firebase configuration error. Please check your setup.';
+      } else if (e.toString().contains('network-request-failed')) {
+        errorMessage = 'Network error. Please check your internet connection.';
+      } else if (e.toString().contains('email-already-in-use')) {
+        errorMessage = 'This email is already registered. Please use a different email or sign in.';
+      } else if (e.toString().contains('weak-password')) {
+        errorMessage = 'Password is too weak. Please use a stronger password.';
+      } else if (e.toString().contains('invalid-email')) {
+        errorMessage = 'Please enter a valid email address.';
+      } else {
+        errorMessage = 'Signup failed: ${e.toString()}';
+      }
+      
+      setState(() => _error = errorMessage);
     } finally {
       setState(() => _loading = false);
     }
