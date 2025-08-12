@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'constants/app_constants.dart';
 import 'theme.dart';
@@ -22,21 +23,12 @@ import 'screens/test_image_gallery.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  print('Starting Firebase initialization...');
-  try {
-    await FirebaseService.initialize();
-    print('Firebase initialization completed successfully');
-  } catch (e) {
-    print('Firebase initialization failed: $e');
-    // Continue with app startup even if Firebase fails
-  }
-  
+  await FirebaseService.initialize();
   runApp(const PlatefulApp());
 }
 
 final _router = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/dashboard/vendor',
   routes: [
     GoRoute(
       path: '/',

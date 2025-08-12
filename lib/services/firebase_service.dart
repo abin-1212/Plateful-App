@@ -17,28 +17,11 @@ class FirebaseService {
 
   static Future<void> initialize() async {
     if (_isInitialized) return;
-    
     try {
-      if (kIsWeb) {
-        // For web, use the manual configuration to ensure it works
-        await Firebase.initializeApp(
-          options: const FirebaseOptions(
-            apiKey: 'AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA',
-            appId: '1:1009788777874:web:376cde409e62a0ed0a7d4b',
-            messagingSenderId: '1009788777874',
-            projectId: 'plateful-8c60b',
-            authDomain: 'plateful-8c60b.firebaseapp.com',
-            storageBucket: 'plateful-8c60b.firebasestorage.app',
-          ),
-        );
-        print('Firebase initialized for web successfully');
-      } else {
-        // For other platforms, use the auto-generated options
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-        print('Firebase initialized for ${defaultTargetPlatform} successfully');
-      }
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      print('Firebase initialized successfully');
       _isInitialized = true;
     } catch (e) {
       print('Firebase initialization error: $e');
@@ -236,5 +219,44 @@ class FirebaseService {
       query = query.where('vendorId', isEqualTo: vendorId);
     }
     return query.snapshots();
+  }
+
+  // Test Firebase connectivity
+  static Future<bool> testConnection() async {
+    try {
+      await _ensureInitialized();
+      // Try to access Firestore to test connectivity
+      await firestore.collection('test').limit(1).get();
+      print('Firebase connection test successful');
+      return true;
+    } catch (e) {
+      print('Firebase connection test failed: $e');
+      return false;
+    }
+  }
+
+  // Get detailed error information
+  static String getErrorMessage(dynamic error) {
+    final errorString = error.toString().toLowerCase();
+    
+    if (errorString.contains('configuration-not-found') || 
+        errorString.contains('firebase') ||
+        errorString.contains('permission-denied')) {
+      return 'Firebase configuration error. Please check your setup.';
+    } else if (errorString.contains('network-request-failed') ||
+               errorString.contains('network') ||
+               errorString.contains('timeout')) {
+      return 'Network error. Please check your internet connection.';
+    } else if (errorString.contains('email-already-in-use')) {
+      return 'This email is already registered. Please use a different email or sign in.';
+    } else if (errorString.contains('weak-password')) {
+      return 'Password is too weak. Please use a stronger password.';
+    } else if (errorString.contains('invalid-email')) {
+      return 'Please enter a valid email address.';
+    } else if (errorString.contains('unavailable')) {
+      return 'Service temporarily unavailable. Please try again.';
+    } else {
+      return 'An error occurred. Please try again.';
+    }
   }
 } 

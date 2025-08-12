@@ -31,6 +31,28 @@
 
   <title>plateful</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+  
+  <!-- Firebase Configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0QfAhNXZGO7mqDZcVzlEFYaJqp9RAhuA",
+      authDomain: "plateful-8c60b.firebaseapp.com",
+      projectId: "plateful-8c60b",
+      storageBucket: "plateful-8c60b.firebasestorage.app",
+      messagingSenderId: "1009788777874",
+      appId: "1:1009788777874:web:376cde409e62a0ed0a7d4b"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

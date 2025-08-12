@@ -54,6 +54,14 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     });
     try {
       print('Starting signup process...');
+      
+      // Test Firebase connection first
+      final isConnected = await FirebaseService.testConnection();
+      if (!isConnected) {
+        setState(() => _error = 'Unable to connect to Firebase. Please check your internet connection and try again.');
+        return;
+      }
+      
       final user = await FirebaseService().signUpWithEmail(
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
@@ -74,22 +82,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       }
     } catch (e) {
       print('Signup error: $e');
-      String errorMessage = 'Signup failed.';
-      
-      if (e.toString().contains('configuration-not-found')) {
-        errorMessage = 'Firebase configuration error. Please check your setup.';
-      } else if (e.toString().contains('network-request-failed')) {
-        errorMessage = 'Network error. Please check your internet connection.';
-      } else if (e.toString().contains('email-already-in-use')) {
-        errorMessage = 'This email is already registered. Please use a different email or sign in.';
-      } else if (e.toString().contains('weak-password')) {
-        errorMessage = 'Password is too weak. Please use a stronger password.';
-      } else if (e.toString().contains('invalid-email')) {
-        errorMessage = 'Please enter a valid email address.';
-      } else {
-        errorMessage = 'Signup failed: ${e.toString()}';
-      }
-      
+      String errorMessage = FirebaseService.getErrorMessage(e);
       setState(() => _error = errorMessage);
     } finally {
       setState(() => _loading = false);
